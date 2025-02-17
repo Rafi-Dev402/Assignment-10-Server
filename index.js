@@ -11,8 +11,8 @@ app.use(express.json())
 
 
 /// MongoDB---------------->
-const uri = `mongodb+srv:// ${process.env.MONGODB_USER} : ${process.env.MDB_USERPASS}@cluster0.wsg3r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
-
+// const uri = "mongodb+srv://<db_username>:<db_password>@cluster0.wsg3r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MDB_USERPASS}@cluster0.wsg3r.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -29,6 +29,21 @@ async function run() {
         // await client.connect();
 
         //// OPERATIONS------------------>
+        const equipmentDB = client.db("equipmentCollection").collection("equipments"); 
+
+
+        // create Operation---------//
+        app.post('/equipments',async(req,res)=>{
+            const equepmentData = req.body;
+            // console.log(equepmentData)
+            const result = await equipmentDB.insertOne(equepmentData);
+            res.send(result)
+        })
+
+
+
+
+
 
 
         // Send a ping to confirm a successful connection
